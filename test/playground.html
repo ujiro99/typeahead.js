@@ -59,67 +59,73 @@
       <div class="typeahead-wrapper">
         <input class="mixed" type="text" placeholder="mixed">
       </div>
+      <div class="typeahead-wrapper">
+        <input class="highlight-multiple" type="text" placeholder="highlight multiple">
+      </div>
     </div>
     </div>
 
     <script>
+
+      var data = [
+        { val: 'Alabama' },
+        { val: 'Alaska' },
+        { val: 'Arizona' },
+        { val: 'Arkansas' },
+        { val: 'California' },
+        { val: 'Colorado' },
+        { val: 'Connecticut' },
+        { val: 'Delaware' },
+        { val: 'Florida' },
+        { val: 'Georgia' },
+        { val: 'Hawaii' },
+        { val: 'Idaho' },
+        { val: 'Illinois' },
+        { val: 'Indiana' },
+        { val: 'Iowa' },
+        { val: 'Kansas' },
+        { val: 'Kentucky' },
+        { val: 'Louisiana' },
+        { val: 'Maine' },
+        { val: 'Maryland' },
+        { val: 'Massachusetts' },
+        { val: 'Michigan' },
+        { val: 'Minnesota' },
+        { val: 'Mississippi' },
+        { val: 'Missouri' },
+        { val: 'Montana' },
+        { val: 'Nebraska' },
+        { val: 'Nevada' },
+        { val: 'New Hampshire' },
+        { val: 'New Jersey' },
+        { val: 'New Mexico' },
+        { val: 'New York' },
+        { val: 'North Carolina' },
+        { val: 'North Dakota' },
+        { val: 'Ohio' },
+        { val: 'Oklahoma' },
+        { val: 'Oregon' },
+        { val: 'Pennsylvania' },
+        { val: 'Rhode Island' },
+        { val: 'South Carolina' },
+        { val: 'South Dakota' },
+        { val: 'Tennessee' },
+        { val: 'Texas' },
+        { val: 'Utah' },
+        { val: 'Vermont' },
+        { val: 'Virginia' },
+        { val: 'Washington' },
+        { val: 'West Virginia' },
+        { val: 'Wisconsin' },
+        { val: 'Wyoming' }
+      ];
+
       var states = new Bloodhound({
         datumTokenizer: function(d) { 
           return Bloodhound.tokenizers.whitespace(d.val); 
         },
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        local: [
-          { val: 'Alabama' },
-          { val: 'Alaska' },
-          { val: 'Arizona' },
-          { val: 'Arkansas' },
-          { val: 'California' },
-          { val: 'Colorado' },
-          { val: 'Connecticut' },
-          { val: 'Delaware' },
-          { val: 'Florida' },
-          { val: 'Georgia' },
-          { val: 'Hawaii' },
-          { val: 'Idaho' },
-          { val: 'Illinois' },
-          { val: 'Indiana' },
-          { val: 'Iowa' },
-          { val: 'Kansas' },
-          { val: 'Kentucky' },
-          { val: 'Louisiana' },
-          { val: 'Maine' },
-          { val: 'Maryland' },
-          { val: 'Massachusetts' },
-          { val: 'Michigan' },
-          { val: 'Minnesota' },
-          { val: 'Mississippi' },
-          { val: 'Missouri' },
-          { val: 'Montana' },
-          { val: 'Nebraska' },
-          { val: 'Nevada' },
-          { val: 'New Hampshire' },
-          { val: 'New Jersey' },
-          { val: 'New Mexico' },
-          { val: 'New York' },
-          { val: 'North Carolina' },
-          { val: 'North Dakota' },
-          { val: 'Ohio' },
-          { val: 'Oklahoma' },
-          { val: 'Oregon' },
-          { val: 'Pennsylvania' },
-          { val: 'Rhode Island' },
-          { val: 'South Carolina' },
-          { val: 'South Dakota' },
-          { val: 'Tennessee' },
-          { val: 'Texas' },
-          { val: 'Utah' },
-          { val: 'Vermont' },
-          { val: 'Virginia' },
-          { val: 'Washington' },
-          { val: 'West Virginia' },
-          { val: 'Wisconsin' },
-          { val: 'Wyoming' }
-        ]
+        local: data
       });
 
       states.initialize();
@@ -298,6 +304,45 @@
       {
         displayKey: 'val',
         source: mixed.ttAdapter()
+      });
+
+      var substringMatcher = function(objects, key) {
+        var findMatches;
+        return findMatches = function(query, cb) {
+          var isAllMatch, matches, obj, q, queries, r, substrRegexs, _i, _j, _k, _len, _len1, _len2, _ref;
+          matches = [];
+          substrRegexs = [];
+          queries = [];
+          _ref = query.split(' ');
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            q = _ref[_i];
+            if (!q) {
+              continue;
+            }
+            queries.push(q);
+            substrRegexs.push(new RegExp(q, 'i'));
+          }
+          for (_j = 0, _len1 = objects.length; _j < _len1; _j++) {
+            obj = objects[_j];
+            isAllMatch = true;
+            for (_k = 0, _len2 = substrRegexs.length; _k < _len2; _k++) {
+              r = substrRegexs[_k];
+              isAllMatch = isAllMatch && r.test(obj[key]);
+            }
+            if (isAllMatch) {
+              matches.push(obj);
+            }
+          }
+          return cb(matches, queries);
+        };
+      };
+
+      $('.highlight-multiple').typeahead({
+        highlight: true
+      },
+      {
+        displayKey: 'val',
+        source: substringMatcher(data, 'val')
       });
 
 
