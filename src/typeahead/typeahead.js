@@ -119,6 +119,7 @@ var Typeahead = (function() {
         this.dropdown.update('');
       }
       this._updateHint();
+      this.input.hidePlaceholder();
 
       this.eventBus.trigger('opened');
     },
@@ -217,7 +218,6 @@ var Typeahead = (function() {
 
     _onQueryChanged: function onQueryChanged(e, query) {
       this.input.clearHintIfInvalid();
-      this.input.showPlaceholder();
 
       query.length >= this.minLength ?
         this.dropdown.update(query) :
@@ -262,7 +262,6 @@ var Typeahead = (function() {
 
       else {
         this.input.clearHint();
-        this.input.hidePlaceholder();
         this.input.setHint(val && match ? (val + match[1]) : '');
       }
     },
