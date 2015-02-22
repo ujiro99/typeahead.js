@@ -923,6 +923,7 @@
                     this.dropdown.update("");
                 }
                 this._updateHint();
+                this.input.hidePlaceholder();
                 this.eventBus.trigger("opened");
             },
             _onClosed: function onClosed() {
@@ -990,7 +991,6 @@
             },
             _onQueryChanged: function onQueryChanged(e, query) {
                 this.input.clearHintIfInvalid();
-                this.input.showPlaceholder();
                 query.length >= this.minLength ? this.dropdown.update(query) : this.dropdown.empty();
                 this.dropdown.open();
                 this._setLanguageDirection();
@@ -1019,7 +1019,6 @@
                     match ? this.input.setHint(val + match[1]) : this.input.clearHint();
                 } else {
                     this.input.clearHint();
-                    this.input.hidePlaceholder();
                     this.input.setHint(val && match ? val + match[1] : "");
                 }
             },
