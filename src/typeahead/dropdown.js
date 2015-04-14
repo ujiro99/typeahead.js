@@ -72,13 +72,11 @@ var Dropdown = (function() {
     },
 
     _hide: function() {
-      this.$menu.hide();
+      this.$menu.removeClass("show").css('visibility', 'hidden');
     },
 
     _show: function() {
-      // can't use jQuery#show because $menu is a span element we want
-      // display: block; not dislay: inline;
-      this.$menu.css('display', 'block');
+      this.$menu.addClass("show").css('visibility', 'visible');
     },
 
     _getSuggestions: function getSuggestions() {
