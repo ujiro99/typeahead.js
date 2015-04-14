@@ -72,11 +72,11 @@ var Dropdown = (function() {
     },
 
     _hide: function() {
-      this.$menu.removeClass("show").css('visibility', 'hidden');
+      this.$menu.removeClass("tt-show").css('visibility', 'hidden');
     },
 
     _show: function() {
-      this.$menu.addClass("show").css('visibility', 'visible');
+      this.$menu.addClass("tt-show").css('visibility', 'visible');
     },
 
     _getSuggestions: function getSuggestions() {
