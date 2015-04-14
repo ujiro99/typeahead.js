@@ -161,10 +161,9 @@
             },
             dropdown: {
                 position: "absolute",
-                top: "100%",
                 left: "0",
                 zIndex: "100",
-                display: "none"
+                visibility: "hidden"
             },
             suggestions: {
                 display: "block"
@@ -734,10 +733,10 @@
                 }
             },
             _hide: function() {
-                this.$menu.hide();
+                this.$menu.removeClass("show").css("visibility", "hidden");
             },
             _show: function() {
-                this.$menu.css("display", "block");
+                this.$menu.addClass("show").css("visibility", "visible");
             },
             _getSuggestions: function getSuggestions() {
                 return this.$menu.find(".tt-suggestion");
